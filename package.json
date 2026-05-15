@@ -1,0 +1,16 @@
+{
+  "name": "global-tasks-dos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Global-Tasks-dos: AI-Powered Enterprise Workspace Platform",
+  "scripts": {
+    "dev": "docker-compose -f infra/docker-compose.yml up --build",
+    "dev:detach": "docker-compose -f infra/docker-compose.yml up --build -d",
+    "stop": "docker-compose -f infra/docker-compose.yml down",
+    "restart": "docker-compose -f infra/docker-compose.yml restart",
+    "logs": "docker-compose -f infra/docker-compose.yml logs -f",
+    "build": "docker-compose -f infra/docker-compose.yml build",
+    "test": "echo 'See each service for test commands'",
+    "clean": "docker-compose -f infra/docker-compose.yml down -v --rmi all"
+  }
+}

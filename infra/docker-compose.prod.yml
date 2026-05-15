@@ -1,0 +1,209 @@
+version: "3.9"
+
+x-shared-env: &shared-env
+  NODE_ENV: production
+  LOG_LEVEL: info
+  REDIS_URL: redis://redis:6379/0
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_DB: global_tasks
+  POSTGRES_USER: ${POSTGRES_USER}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  RABBITMQ_URL: ${RABBITMQ_URL:-amqp://guest:guest@rabbitmq:5672}
+
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: global-tasks-traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${LETSENCRYPT_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "letsencrypt-data:/letsencrypt"
+    networks:
+      - global-tasks-net
+
+  postgres:
+    <<: *restart
+    image: postgres:16-alpine
+    container_name: global-tasks-postgres
+    environment:
+      POSTGRES_DB: global_tasks
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d global_tasks"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - global-tasks-net
+
+  redis:
+    <<: *restart
+    image: redis:7-alpine
+    container_name: global-tasks-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - global-tasks-net
+
+  rabbitmq:
+    <<: *restart
+    image: rabbitmq:4-management-alpine
+    container_name: global-tasks-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - global-tasks-net
+
+  api-gateway:
+    <<: *restart
+    build:
+      context: ../backend/api-gateway
+    container_name: global-tasks-api-gateway
+    environment:
+      <<: *shared-env
+      JWT_SECRET: ${JWT_SECRET}
+      AGENTS_SERVICE_URL: http://agents-service:8001
+      CRM_SERVICE_URL: http://crm-service:3002
+      WORKFLOW_ENGINE_URL: http://workflow-engine:3004
+      REALTIME_SERVICE_URL: http://realtime-service:3003
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`${API_DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+    networks:
+      - global-tasks-net
+
+  agents-service:
+    <<: *restart
+    build:
+      context: ../backend/agents-service
+    container_name: global-tasks-agents-service
+    environment:
+      <<: *shared-env
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - global-tasks-net
+
+  crm-service:
+    <<: *restart
+    build:
+      context: ../backend/crm-service
+    container_name: global-tasks-crm-service
+    environment:
+      <<: *shared-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - global-tasks-net
+
+  realtime-service:
+    <<: *restart
+    build:
+      context: ../backend/realtime-service
+    container_name: global-tasks-realtime-service
+    environment:
+      <<: *shared-env
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - global-tasks-net
+
+  workflow-engine:
+    <<: *restart
+    build:
+      context: ../backend/workflow-engine
+    container_name: global-tasks-workflow-engine
+    environment:
+      <<: *shared-env
+      AUTH_ENABLED: "true"
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - global-tasks-net
+
+  mcp-server:
+    <<: *restart
+    build:
+      context: ../backend/mcp-server
+    container_name: global-tasks-mcp
+    environment:
+      <<: *shared-env
+      API_BASE_URL: http://api-gateway:8000/api/v1
+    depends_on:
+      - api-gateway
+    networks:
+      - global-tasks-net
+
+  frontend:
+    <<: *restart
+    build:
+      context: ../frontend
+    container_name: global-tasks-frontend
+    environment:
+      <<: *shared-env
+      NEXT_PUBLIC_API_URL: https://${API_DOMAIN}/api
+      NEXT_PUBLIC_WS_URL: wss://${API_DOMAIN}/ws
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+    networks:
+      - global-tasks-net
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
+  letsencrypt-data:
+
+networks:
+  global-tasks-net:
+    external: true
+    name: global-tasks-net
