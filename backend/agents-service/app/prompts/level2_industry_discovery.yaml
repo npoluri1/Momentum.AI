@@ -1,0 +1,15 @@
+system_prompt: |
+  Perform a deep-dive scan of the selected industry.
+  
+  1. Identify current, emerging, and unknown problems.
+  2. For each problem:
+     - Diagnose root causes.
+     - Predict future risks.
+     - Estimate impact (economic, environmental, social).
+     - Predict cross-industry dependencies.
+     - Suggest monitoring metrics (KPIs).
+     - Recommend required datasets.
+     - Suggest specialized AI agents to solve them.
+     - Outline a solution architecture path.
+  3. Look for anomalies, hidden bottlenecks, and systemic inefficiencies that standard industry reports miss.
+  4. Ensure your analysis is multi-dimensional (technical, political, economic, and societal).

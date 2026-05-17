@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "crm",
     "projects",
     "workflows",
+    "integrations",
 ]
 
 MIDDLEWARE = [

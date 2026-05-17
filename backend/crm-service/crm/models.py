@@ -256,15 +256,15 @@ class Note(models.Model):
     is_pinned = models.BooleanField(default=False)
     lead = models.ForeignKey(
         Lead, on_delete=models.CASCADE, null=True, blank=True,
-        related_name="notes"
+        related_name="note_entries"
     )
     contact = models.ForeignKey(
         Contact, on_delete=models.CASCADE, null=True, blank=True,
-        related_name="notes"
+        related_name="note_entries"
     )
     deal = models.ForeignKey(
         Deal, on_delete=models.CASCADE, null=True, blank=True,
-        related_name="notes"
+        related_name="note_entries"
     )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,

@@ -1,7 +1,7 @@
 {
   "name": "global-tasks-workflow-engine",
   "version": "1.0.0",
-  "description": "Workflow and automation engine for Global-Tasks-dos",
+  "description": "Workflow and automation engine for Momentum.AI",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",

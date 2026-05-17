@@ -3,7 +3,7 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=crm_service.settings \
-    PORT=8000
+    PORT=8002
 
 WORKDIR /app
 
@@ -23,5 +23,8 @@ EXPOSE $PORT
 
 RUN python manage.py collectstatic --noinput
 
-CMD ["sh", "-c", "python manage.py migrate && \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python manage.py check --deploy || exit 1
+
+CMD ["sh", "-c", "python manage.py migrate --noinput && \
     python manage.py runserver 0.0.0.0:${PORT}"]

@@ -4,6 +4,7 @@ from app.tools.web_search import WebSearchTool
 from app.tools.web_fetch import WebFetchTool
 from app.tools.code_executor import CodeExecutorTool
 from app.tools.data_analyzer import DataAnalyzerTool
+from app.tools.design_3d import Design3DTool
 
 
 class ToolRegistry:
@@ -15,6 +16,7 @@ class ToolRegistry:
         cls.register(WebFetchTool())
         cls.register(CodeExecutorTool())
         cls.register(DataAnalyzerTool())
+        cls.register(Design3DTool())
 
     @classmethod
     def register(cls, tool: BaseTool):

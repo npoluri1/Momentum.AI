@@ -8,6 +8,7 @@ import {
   MessageSquare, CheckCircle, BarChart3, ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
+import ThreeDViewer from '@/components/ui/ThreeDViewer';
 
 export default function WorkspaceDetailPage() {
   const params = useParams();
@@ -68,7 +69,7 @@ export default function WorkspaceDetailPage() {
             </div>
 
             <div className="flex items-center gap-2 border-b border-surface-200 dark:border-surface-700">
-              {['Overview', 'Projects', 'Agents', 'Workflows'].map((tab) => (
+              {['Overview', 'Projects', 'Agents', 'Workflows', 'Design'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab.toLowerCase())}
@@ -120,6 +121,18 @@ export default function WorkspaceDetailPage() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'design' && (
+          <div className="space-y-6">
+            <ThreeDViewer 
+              title="Project 3D Blueprint" 
+              sceneData={{
+                metadata: { domain: 'mechanical' },
+                objects: [{ name: 'Chassis' }, { name: 'Engine Block' }]
+              }} 
+            />
           </div>
         )}
       </div>

@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 class Organization(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    logo = models.ImageField(upload_to="org_logos/", blank=True, null=True)
+    logo = models.FileField(upload_to="org_logos/", blank=True, null=True)
     website = models.URLField(blank=True, default="")
     description = models.TextField(blank=True, default="")
     is_active = models.BooleanField(default=True)
@@ -80,7 +80,7 @@ class User(AbstractUser):
         default="member",
     )
     phone = models.CharField(max_length=50, blank=True, default="")
-    avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    avatar = models.FileField(upload_to="avatars/", blank=True, null=True)
     job_title = models.CharField(max_length=255, blank=True, default="")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

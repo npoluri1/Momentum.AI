@@ -5,10 +5,10 @@
     ██║   ██╔══██║╚════██║██╔═██╗ ██╔══██║██║  ██║██╔══╝
     ██║   ██║  ██║███████║██║  ██╗██║  ██║██████╔╝███████╗
     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝
-                  Global-Tasks-dos
+                  Momentum.AI
           Build without permission. Ship without limits.
 
-I'm building Global-Tasks-dos — an AI-native workspace platform inspired by Taskade Genesis.
+I'm building Momentum.AI — an AI-native workspace platform inspired by Taskade Genesis.
 
 Born from late nights and unlimited ambition. One prompt becomes a living system with AI agents, workflow automations, project management, and CRM — all wired together, all running in real-time.
 
@@ -41,7 +41,7 @@ Born from late nights and unlimited ambition. One prompt becomes a living system
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 
-Describe what you need. Global-Tasks-dos builds the full system around it — memory (PostgreSQL + Redis + ChromaDB), intelligence (multi-model AI agents from OpenAI, Anthropic, Google Gemini), execution (workflow automations with 100+ integrations) — running the moment you deploy.
+Describe what you need. Momentum.AI builds the full system around it — memory (PostgreSQL + Redis + ChromaDB), intelligence (multi-model AI agents from OpenAI, Anthropic, Google Gemini), execution (workflow automations with 100+ integrations) — running the moment you deploy.
 
   ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮ ╭─╮
   │ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ ╰─╯ │
@@ -81,7 +81,7 @@ Describe what you need. Global-Tasks-dos builds the full system around it — me
 
 ```bash
 git clone <repo-url>
-cd Global-Tasks-dos
+cd Momentum.AI
 docker-compose -f infra/docker-compose.yml up --build
 ```
 
@@ -107,4 +107,4 @@ Then open http://localhost — your workspace is live.
      One prompt. One platform. No limits.
      Still shipping. Still no manual.
 
-     D:\WorkSpace\Claude_Code\Global-Tasks-dos
+     D:\WorkSpace\Claude_Code\Momentum.AI

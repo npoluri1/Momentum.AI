@@ -123,4 +123,19 @@ class OrchestrationRequest(BaseModel):
 
 class OrchestrationResponse(BaseModel):
     final_output: str
-    intermediate_results: Optional[list[dict[str, Any]]] = None
+    intermediate_results: Optional[List[Dict[str, Any]]] = None
+
+
+class GenesisRequest(BaseModel):
+    prompt: str
+    organization_id: str
+    user_id: str
+
+
+class GenesisResponse(BaseModel):
+    success: bool
+    project_id: str
+    name: str
+    domain: str
+    message: str
+

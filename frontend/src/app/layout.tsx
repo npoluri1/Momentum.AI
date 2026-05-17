@@ -5,27 +5,27 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Taskade',
-    default: 'AI App Builder: Vibe Code Apps, AI Agents & Workflow Automations | Taskade',
+    template: '%s | Momentum.AI',
+    default: 'Momentum.AI: AI-Native Workspace Platform',
   },
   description:
-    'AI-powered workspace platform. Build apps, deploy AI agents, automate workflows from one prompt. Projects hold memory. Agents think. Automations execute.',
+    'AI-powered enterprise workspace platform. Build apps, deploy AI agents, automate workflows from one prompt. Projects hold memory. Agents think. Automations execute.',
   keywords: [
     'AI app builder',
     'AI agents',
     'workflow automation',
-    'vibe coding',
+    'enterprise workspace',
     'project management',
     'CRM',
     'workspace',
     'no-code',
   ],
   openGraph: {
-    title: 'AI App Builder: Vibe Code Apps, AI Agents & Workflow Automations | Taskade',
+    title: 'Momentum.AI: AI-Native Workspace Platform',
     description:
-      'AI-powered workspace platform. Build apps, deploy AI agents, automate workflows from one prompt.',
+      'AI-powered enterprise workspace platform. Build apps, deploy AI agents, automate workflows from one prompt.',
     type: 'website',
-    siteName: 'Taskade',
+    siteName: 'Momentum.AI',
   },
 };
 

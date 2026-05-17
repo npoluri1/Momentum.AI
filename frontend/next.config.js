@@ -28,11 +28,7 @@ const nextConfig = {
       },
       {
         source: '/ws/:path*',
-        destination: `${process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:8001'}/:path*`,
-      },
-      {
-        source: '/storage/:path*',
-        destination: `${process.env.NEXT_PUBLIC_STORAGE_URL || 'http://localhost:8002'}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_WS_URL || 'http://realtime-service:8004'}/:path*`,
       },
     ];
   },

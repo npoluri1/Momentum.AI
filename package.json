@@ -1,8 +1,8 @@
 {
-  "name": "global-tasks-dos",
+  "name": "momentum-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "Global-Tasks-dos: AI-Powered Enterprise Workspace Platform",
+  "description": "Momentum.AI: AI-Powered Enterprise Workspace Platform",
   "scripts": {
     "dev": "docker-compose -f infra/docker-compose.yml up --build",
     "dev:detach": "docker-compose -f infra/docker-compose.yml up --build -d",

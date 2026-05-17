@@ -8,6 +8,7 @@ api_patterns = [
     path("crm/", include("crm.urls")),
     path("projects/", include("projects.urls")),
     path("workflows/", include("workflows.urls")),
+    path("integrations/", include("integrations.urls")),
 ]
 
 urlpatterns = [

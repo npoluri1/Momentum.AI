@@ -31,6 +31,37 @@ const templates = [
 export default function CreatePage() {
   const [prompt, setPrompt] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [isBuilding, setIsBuilding] = useState(false);
+
+  const handleBuild = async () => {
+    if (!prompt.trim()) return;
+    
+    setIsBuilding(true);
+    try {
+      // In a real app, we'd get the org/user from auth context
+      const response = await fetch('/api/v1/proxy/agents/api/v1/chat/genesis', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt,
+          organization_id: 'org-default',
+          user_id: 'user-default',
+        }),
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        window.location.href = `/workspace/${data.project_id}`;
+      } else {
+        alert('Failed to build: ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      console.error('Build error:', error);
+      alert('Error connecting to Genesis Engine');
+    } finally {
+      setIsBuilding(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-950">
@@ -59,11 +90,21 @@ export default function CreatePage() {
             />
             <div className="absolute bottom-4 right-4 flex items-center gap-2">
               <button
+                onClick={handleBuild}
                 className="px-5 py-2.5 text-sm font-semibold rounded-xl bg-brand-600 text-white hover:bg-brand-700 shadow-lg shadow-brand-600/25 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!prompt.trim()}
+                disabled={!prompt.trim() || isBuilding}
               >
-                <Zap className="w-4 h-4" />
-                Build it
+                {isBuilding ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Building...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    Build it
+                  </>
+                )}
               </button>
             </div>
           </div>

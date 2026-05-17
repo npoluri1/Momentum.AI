@@ -1,5 +1,5 @@
 # ============================================================================
-# Global-Tasks-dos - Docker Compose
+# Momentum.AI - Docker Compose
 # ============================================================================
 
 version: "3.9"
@@ -246,6 +246,44 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
+    networks:
+      - global-tasks-net
+
+  # ─── CRM Celery Worker ──────────────────────────────────────────────────
+  crm-worker:
+    <<: *restart
+    build:
+      context: ../backend/crm-service
+      dockerfile: Dockerfile
+    container_name: global-tasks-crm-worker
+    environment:
+      <<: *shared-env
+      SERVICE_NAME: crm-worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A crm_service worker -l info -c 4 --pidfile=/tmp/celery.pid
+    networks:
+      - global-tasks-net
+
+  # ─── CRM Celery Beat (Scheduler) ────────────────────────────────────────
+  crm-beat:
+    <<: *restart
+    build:
+      context: ../backend/crm-service
+      dockerfile: Dockerfile
+    container_name: global-tasks-crm-beat
+    environment:
+      <<: *shared-env
+      SERVICE_NAME: crm-beat
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A crm_service beat -l info --pidfile=/tmp/celerybeat.pid
     networks:
       - global-tasks-net
 
