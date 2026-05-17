@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 export default function SystemicRiskDashboard() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -35,7 +35,7 @@ export default function SystemicRiskDashboard() {
       {/* Risks */}
       <div>
         <h2 className="text-lg font-semibold mb-2">Active Risks</h2>
-        {data.risks.map((risk, i) => (
+        {data.risks.map((risk: any, i: number) => (
           <div key={i} className="p-3 mb-2 rounded bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200">
             {risk.message}
           </div>
@@ -45,7 +45,7 @@ export default function SystemicRiskDashboard() {
       {/* Agent Tasks */}
       <div>
         <h2 className="text-lg font-semibold mb-2">Agentic Responses</h2>
-        {data.tasks.map((task) => (
+        {data.tasks.map((task: any) => (
           <div key={task.id} className="p-3 border-l-4 border-blue-500 bg-white dark:bg-gray-800 mb-2">
             <div className="font-semibold">{task.title}</div>
             <div className="text-sm text-gray-500">{task.description}</div>

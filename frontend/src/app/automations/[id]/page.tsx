@@ -102,7 +102,7 @@ export default function WorkflowDetailPage() {
           <p className="text-sm text-gray-500 mt-1">{workflow.description || 'No description'}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleTest} isLoading={testing}>
+          <Button variant="outline" size="sm" onClick={handleTest} loading={testing}>
             <Play className="h-4 w-4" />
             Test Run
           </Button>
@@ -216,7 +216,7 @@ export default function WorkflowDetailPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Trigger</span>
-                <Badge variant="info">{workflow.trigger.type}</Badge>
+                <Badge variant="primary">{workflow.trigger.type}</Badge>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Steps</span>

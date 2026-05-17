@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import toast from 'react-hot-toast';
@@ -36,7 +36,7 @@ interface NotificationPref {
   enabled: boolean;
 }
 
-export default function SettingsPage() {
+function SettingsPageContent() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab') as Tab | null;
   const [activeTab, setActiveTab] = useState<Tab>(tabParam ?? 'profile');
@@ -395,5 +395,13 @@ function AppearanceTab() {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 animate-pulse bg-surface-100 dark:bg-surface-800 rounded-xl h-96" />}>
+      <SettingsPageContent />
+    </Suspense>
   );
 }

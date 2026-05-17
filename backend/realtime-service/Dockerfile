@@ -27,3 +27,11 @@ ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 
 CMD ["node", "dist/index.js"]
+
+FROM node:20-alpine AS development
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm install
+COPY . .
+EXPOSE 8004
+CMD ["npm", "run", "dev"]

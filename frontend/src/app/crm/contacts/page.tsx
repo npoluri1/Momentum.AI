@@ -145,7 +145,7 @@ export default function ContactsPage() {
                       <td className="px-4 py-3 text-sm text-gray-400">{contact.company || '-'}</td>
                       <td className="px-4 py-3 text-sm text-gray-400">{contact.position || '-'}</td>
                       <td className="px-4 py-3">
-                        <Badge variant={contact.status === 'active' ? 'success' : contact.status === 'lead' ? 'info' : 'default'}>{contact.status}</Badge>
+                        <Badge variant={contact.status === 'active' ? 'success' : contact.status === 'lead' ? 'primary' : 'default'}>{contact.status}</Badge>
                       </td>
                       <td className="px-4 py-3"><span className="text-sm text-gray-300">{contact.score}</span></td>
                       <td className="px-4 py-3">
@@ -173,7 +173,7 @@ export default function ContactsPage() {
           <Input id="source" label="Source" value={form.source} onChange={(e) => setForm({ ...form, source: e.target.value })} />
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="outline" type="button" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button type="submit" isLoading={saving}>{editing ? 'Update' : 'Create'}</Button>
+            <Button type="submit" loading={saving}>{editing ? 'Update' : 'Create'}</Button>
           </div>
         </form>
       </Modal>

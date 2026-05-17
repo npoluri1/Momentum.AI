@@ -19,7 +19,7 @@ import { Spinner } from '@/components/ui/Loading';
 import { cn, formatRelativeTime } from '@/lib/utils';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 
-interface AdminUser {
+interface AdminUser extends Record<string, unknown> {
   id: string;
   name: string;
   email: string;
@@ -220,10 +220,10 @@ export default function AdminPage() {
             />
           </CardHeader>
           <CardContent padding={false}>
-            <Table
+            <Table<AdminUser>
               columns={userColumns}
-              data={filteredUsers as unknown as Record<string, unknown>[]}
-              keyExtractor={(u) => u.id as string}
+              data={filteredUsers}
+              keyExtractor={(u) => u.id}
             />
           </CardContent>
         </Card>

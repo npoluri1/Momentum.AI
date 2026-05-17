@@ -6,7 +6,7 @@ import {
   Puzzle, Bell, Clock, Bookmark, ChevronRight,
   Save, Loader2, Check, Plus, Trash2,
   HelpCircle, ExternalLink, Crown, Sparkles,
-  Globe, User, Mail, Shield, Link,
+  Globe, User, Mail, Shield, Link, Archive,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';

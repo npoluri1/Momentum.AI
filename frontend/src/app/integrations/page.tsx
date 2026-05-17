@@ -151,7 +151,7 @@ export default function IntegrationsPage() {
                     <Button
                       size="sm"
                       variant={integration.connected ? 'danger' : 'primary'}
-                      isLoading={connecting === integration.id}
+                      loading={connecting === integration.id}
                       onClick={() => integration.connected ? handleDisconnect(integration.id) : handleConnect(integration.id)}
                     >
                       {integration.connected ? (

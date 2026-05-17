@@ -147,7 +147,7 @@ export default function DealsPage() {
                           deal.stage === 'closed_won' ? 'success' :
                           deal.stage === 'closed_lost' ? 'danger' :
                           deal.stage === 'negotiation' ? 'warning' :
-                          deal.stage === 'proposal' ? 'info' : 'default'
+                          deal.stage === 'proposal' ? 'primary' : 'default'
                         }>{deal.stage.replace('_', ' ')}</Badge>
                       </td>
                       <td className="px-4 py-3">
@@ -182,7 +182,7 @@ export default function DealsPage() {
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="outline" type="button" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button type="submit" isLoading={saving}>Create Deal</Button>
+            <Button type="submit" loading={saving}>Create Deal</Button>
           </div>
         </form>
       </Modal>

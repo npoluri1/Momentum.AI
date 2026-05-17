@@ -90,7 +90,7 @@ export default function RegisterPage() {
 
         {error && <p className="text-sm text-red-400">{error}</p>}
 
-        <Button type="submit" isLoading={isLoading} className="w-full">
+        <Button type="submit" loading={isLoading} className="w-full">
           Create Account
         </Button>
       </form>

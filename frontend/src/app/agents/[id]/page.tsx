@@ -212,7 +212,7 @@ export default function AgentDetailPage() {
                     className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     disabled={sending}
                   />
-                  <Button type="submit" isLoading={sending} disabled={!input.trim()}>
+                  <Button type="submit" loading={sending} disabled={!input.trim()}>
                     <Send className="h-4 w-4" />
                   </Button>
                 </form>
@@ -241,7 +241,7 @@ export default function AgentDetailPage() {
                 <p className="text-gray-500">Tools</p>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {agent.tools.length > 0 ? agent.tools.map((t) => (
-                    <Badge key={t} variant="info">{t}</Badge>
+                    <Badge key={t} variant="primary">{t}</Badge>
                   )) : <span className="text-gray-600">None</span>}
                 </div>
               </div>

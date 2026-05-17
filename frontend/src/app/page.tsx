@@ -130,7 +130,7 @@ export default function LandingPage() {
                   <div
                     key={menu}
                     className="relative"
-                    onMouseEnter={() => { clearTimeout(menuTimeout.current); setActiveMenu(menu); }}
+                    onMouseEnter={() => { if (menuTimeout.current) clearTimeout(menuTimeout.current); setActiveMenu(menu); }}
                     onMouseLeave={() => { menuTimeout.current = setTimeout(() => setActiveMenu(null), 150); }}
                   >
                     <button className="px-3 py-1.5 text-sm font-medium text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-white rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors flex items-center gap-1">

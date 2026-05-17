@@ -215,7 +215,7 @@ export default function NewAgentPage() {
 
         <div className="flex justify-end gap-3">
           <Button variant="outline" type="button" onClick={() => router.back()}>Cancel</Button>
-          <Button type="submit" isLoading={saving}>Create Agent</Button>
+          <Button type="submit" loading={saving}>Create Agent</Button>
         </div>
       </form>
     </div>

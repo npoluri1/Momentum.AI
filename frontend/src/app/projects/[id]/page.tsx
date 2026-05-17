@@ -226,8 +226,8 @@ export default function ProjectDetailPage() {
                       tasks.map((task) => (
                         <tr key={task.id} className="border-b border-gray-800/50 hover:bg-gray-800/30">
                           <td className="px-4 py-3 text-sm text-gray-200">{task.title}</td>
-                          <td className="px-4 py-3"><Badge variant="info">{task.status.replace('_', ' ')}</Badge></td>
-                          <td className="px-4 py-3"><Badge variant={task.priority === 'urgent' ? 'danger' : task.priority === 'high' ? 'warning' : task.priority === 'medium' ? 'info' : 'default'}>{task.priority}</Badge></td>
+                          <td className="px-4 py-3"><Badge variant="primary">{task.status.replace('_', ' ')}</Badge></td>
+                          <td className="px-4 py-3"><Badge variant={task.priority === 'urgent' ? 'danger' : task.priority === 'high' ? 'warning' : task.priority === 'medium' ? 'primary' : 'default'}>{task.priority}</Badge></td>
                           <td className="px-4 py-3 text-sm text-gray-400">{task.assignee?.name || '-'}</td>
                           <td className="px-4 py-3 text-sm text-gray-500">{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : '-'}</td>
                         </tr>

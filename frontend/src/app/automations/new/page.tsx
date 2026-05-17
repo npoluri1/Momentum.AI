@@ -159,7 +159,7 @@ export default function NewWorkflowPage() {
                       ))}
                     </select>
                     <div className="flex items-center gap-2">
-                      <Badge variant="info">{step.action.replace('_', ' ')}</Badge>
+                      <Badge variant="primary">{step.action.replace('_', ' ')}</Badge>
                       <span className="text-xs text-gray-600">Step {step.order}</span>
                     </div>
                   </div>
@@ -173,13 +173,13 @@ export default function NewWorkflowPage() {
         </Card>
 
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={handleTest} isLoading={testing}>
+          <Button type="button" variant="outline" onClick={handleTest} loading={testing}>
             <Play className="h-4 w-4" />
             Test Run
           </Button>
           <div className="flex gap-3">
             <Button variant="outline" type="button" onClick={() => router.back()}>Cancel</Button>
-            <Button type="submit" isLoading={saving}>Create Workflow</Button>
+            <Button type="submit" loading={saving}>Create Workflow</Button>
           </div>
         </div>
       </form>

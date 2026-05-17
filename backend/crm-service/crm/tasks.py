@@ -5,13 +5,12 @@ from django.db import transaction
 
 @shared_task
 def send_invitation_email(invitation_id: str) -> dict:
-    from .models import Notification
-    notification = Notification.objects.filter(id=invitation_id).first()
-    if not notification:
+    from accounts.models import Invitation
+    invitation = Invitation.objects.filter(id=invitation_id).first()
+    if not invitation:
         return {"status": "error", "message": "Invitation not found"}
-    # Simulate email sending
-    print(f"[TASK] Sending invitation email: {notification}")
-    return {"status": "sent", "notification_id": str(invitation_id)}
+    print(f"[TASK] Sending invitation email to {invitation.email}")
+    return {"status": "sent", "invitation_id": str(invitation_id)}
 
 
 @shared_task

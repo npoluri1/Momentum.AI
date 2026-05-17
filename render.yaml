@@ -6,31 +6,81 @@ services:
     name: api-gateway
     env: python
     buildCommand: pip install -r backend/api-gateway/requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
     rootDir: backend/api-gateway
     envVars:
       - key: DEBUG
         value: "false"
+      - key: AGENTS_SERVICE_URL
+        value: http://agents-service:8001
+      - key: CRM_SERVICE_URL
+        value: http://crm-service:8002
+      - key: WORKFLOW_ENGINE_URL
+        value: http://workflow-engine:8003
+      - key: REALTIME_SERVICE_URL
+        value: http://realtime-service:8004
+      - key: DATABASE_URL
+        fromDatabase:
+          name: momentum-db
+          property: connectionString
+      - key: REDIS_URL
+        value: redis://red-xxxx:6379
 
   - type: web
     name: agents-service
     env: python
     buildCommand: pip install -r backend/agents-service/requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8001
+    startCommand: gunicorn -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8001
     rootDir: backend/agents-service
     envVars:
       - key: APP_NAME
         value: "GIO-Agents-Core"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: momentum-db
+          property: connectionString
 
   - type: web
     name: crm-service
     env: python
-    buildCommand: pip install -r backend/crm-service/requirements.txt
-    startCommand: python manage.py runserver 0.0.0.0:8002
+    buildCommand: pip install -r backend/crm-service/requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn crm_service.wsgi:application --bind 0.0.0.0:8002
     rootDir: backend/crm-service
     envVars:
       - key: DEBUG
         value: "false"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: momentum-db
+          property: connectionString
+
+  - type: web
+    name: workflow-engine
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    rootDir: backend/workflow-engine
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8003"
+      - key: REDIS_URL
+        value: redis://red-xxxx:6379
+
+  - type: web
+    name: realtime-service
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    rootDir: backend/realtime-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "8004"
+      - key: REDIS_URL
+        value: redis://red-xxxx:6379
 
   - type: web
     name: frontend

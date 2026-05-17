@@ -94,9 +94,9 @@ services:
       <<: *shared-env
       JWT_SECRET: ${JWT_SECRET}
       AGENTS_SERVICE_URL: http://agents-service:8001
-      CRM_SERVICE_URL: http://crm-service:3002
+      CRM_SERVICE_URL: http://crm-service:8002
       WORKFLOW_ENGINE_URL: http://workflow-engine:3004
-      REALTIME_SERVICE_URL: http://realtime-service:3003
+      REALTIME_SERVICE_URL: http://realtime-service:8004
     depends_on:
       postgres:
         condition: service_healthy

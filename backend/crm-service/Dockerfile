@@ -1,5 +1,4 @@
-FROM python:3.11-slim
-
+FROM python:3.11-slim AS base
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=crm_service.settings \
@@ -17,10 +16,14 @@ RUN apt-get update && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+FROM base AS development
 COPY . .
-
 EXPOSE $PORT
+CMD ["sh", "-c", "python manage.py migrate --noinput && \
+    python manage.py runserver 0.0.0.0:${PORT}"]
 
+FROM base AS production
+COPY . .
 RUN python manage.py collectstatic --noinput
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \

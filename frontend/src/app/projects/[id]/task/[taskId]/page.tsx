@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { getSocket } from '@/lib/socket';
-import { Card, CardContent, Button, Badge, Input } from '@/components/ui';
+import { Card, CardContent, CardHeader, Button, Badge, Input } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import {
   ArrowLeft, Clock, User, Calendar, MessageSquare, Paperclip,
@@ -137,7 +137,7 @@ export default function TaskDetailPage() {
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-white">{task.title}</h1>
-            <Badge variant={task.priority === 'urgent' ? 'danger' : task.priority === 'high' ? 'warning' : task.priority === 'medium' ? 'info' : 'default'}>
+            <Badge variant={task.priority === 'urgent' ? 'danger' : task.priority === 'high' ? 'warning' : task.priority === 'medium' ? 'primary' : 'default'}>
               {task.priority}
             </Badge>
           </div>
@@ -236,7 +236,7 @@ export default function TaskDetailPage() {
                   placeholder="Write a comment..."
                   className="text-sm"
                 />
-                <Button type="submit" size="sm" isLoading={sending} disabled={!commentInput.trim()}>
+                <Button type="submit" size="sm" loading={sending} disabled={!commentInput.trim()}>
                   <Send className="h-3 w-3" />
                 </Button>
               </form>
@@ -300,7 +300,7 @@ export default function TaskDetailPage() {
               {task.labels?.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {task.labels.map((label) => (
-                    <Badge key={label} variant="info">{label}</Badge>
+                    <Badge key={label} variant="primary">{label}</Badge>
                   ))}
                 </div>
               )}

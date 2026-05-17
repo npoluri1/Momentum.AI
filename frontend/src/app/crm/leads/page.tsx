@@ -136,7 +136,7 @@ export default function LeadsPage() {
                         <Badge variant={
                           lead.status === 'converted' ? 'success' :
                           lead.status === 'lost' ? 'danger' :
-                          lead.status === 'qualified' ? 'info' :
+                          lead.status === 'qualified' ? 'primary' :
                           lead.status === 'contacted' ? 'warning' : 'default'
                         }>{lead.status}</Badge>
                       </td>
@@ -171,7 +171,7 @@ export default function LeadsPage() {
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button variant="outline" type="button" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button type="submit" isLoading={saving}>Create Lead</Button>
+            <Button type="submit" loading={saving}>Create Lead</Button>
           </div>
         </form>
       </Modal>

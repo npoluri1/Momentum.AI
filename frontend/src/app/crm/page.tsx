@@ -148,7 +148,7 @@ export default function CRMPage() {
                       <p className="text-xs text-gray-500">{lead.email}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={lead.status === 'converted' ? 'success' : lead.status === 'lost' ? 'danger' : 'info'}>{lead.status}</Badge>
+                      <Badge variant={lead.status === 'converted' ? 'success' : lead.status === 'lost' ? 'danger' : 'primary'}>{lead.status}</Badge>
                       <span className="text-xs text-gray-600">{lead.score}/100</span>
                     </div>
                   </div>
