@@ -26,10 +26,6 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/:path*`,
       },
-      {
-        source: '/ws/:path*',
-        destination: `${process.env.NEXT_PUBLIC_WS_URL || 'http://realtime-service:8004'}/:path*`,
-      },
     ];
   },
   webpack: (config) => {
