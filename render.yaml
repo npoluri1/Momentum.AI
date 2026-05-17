@@ -1,0 +1,49 @@
+# Momentum.AI Render Blueprint
+# This file automates the deployment of all core Momentum.AI services.
+
+services:
+  - type: web
+    name: api-gateway
+    env: python
+    buildCommand: pip install -r backend/api-gateway/requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    rootDir: backend/api-gateway
+    envVars:
+      - key: DEBUG
+        value: "false"
+
+  - type: web
+    name: agents-service
+    env: python
+    buildCommand: pip install -r backend/agents-service/requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8001
+    rootDir: backend/agents-service
+    envVars:
+      - key: APP_NAME
+        value: "GIO-Agents-Core"
+
+  - type: web
+    name: crm-service
+    env: python
+    buildCommand: pip install -r backend/crm-service/requirements.txt
+    startCommand: python manage.py runserver 0.0.0.0:8002
+    rootDir: backend/crm-service
+    envVars:
+      - key: DEBUG
+        value: "false"
+
+  - type: web
+    name: frontend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    rootDir: frontend
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://api-gateway-momentum.onrender.com
+
+databases:
+  - name: momentum-db
+    databaseName: momentum_db
+    user: momentum_user
+    plan: free
