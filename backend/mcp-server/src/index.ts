@@ -302,31 +302,31 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 server.setRequestHandler(ListResourcesRequestSchema, async () => ({
   resources: [
     {
-      uri: 'taskade://workspace/overview',
+      uri: 'momentum://workspace/overview',
       name: 'Workspace Overview',
       description: 'Overview of the current workspace with stats',
       mimeType: 'application/json',
     },
     {
-      uri: 'taskade://agents/list',
+      uri: 'momentum://agents/list',
       name: 'AI Agents List',
       description: 'List of all AI agents in the workspace',
       mimeType: 'application/json',
     },
     {
-      uri: 'taskade://projects/list',
+      uri: 'momentum://projects/list',
       name: 'Projects List',
       description: 'List of all projects in the workspace',
       mimeType: 'application/json',
     },
     {
-      uri: 'taskade://workflows/list',
+      uri: 'momentum://workflows/list',
       name: 'Workflows List',
       description: 'List of all automation workflows',
       mimeType: 'application/json',
     },
     {
-      uri: 'taskade://gallery',
+      uri: 'momentum://gallery',
       name: 'Workspace Gallery',
       description: 'Community workspace gallery with cloneable apps',
       mimeType: 'application/json',
@@ -338,7 +338,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const uri = request.params.uri;
 
   const resources: Record<string, string> = {
-    'taskade://workspace/overview': JSON.stringify({
+    'momentum://workspace/overview': JSON.stringify({
       projects: 12,
       activeAgents: 8,
       workflows: 15,
@@ -346,19 +346,19 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
       members: 5,
       storageUsed: '2.4 GB',
     }),
-    'taskade://agents/list': JSON.stringify([
+    'momentum://agents/list': JSON.stringify([
       { id: 'agent-1', name: 'Lead Enricher', model: 'GPT-4o', status: 'active' },
       { id: 'agent-2', name: 'SDR Agent', model: 'Claude 3.5', status: 'active' },
     ]),
-    'taskade://projects/list': JSON.stringify([
+    'momentum://projects/list': JSON.stringify([
       { id: 'proj-1', name: 'Sales Pipeline', tasks: 24, completed: 18 },
       { id: 'proj-2', name: 'CRM', tasks: 32, completed: 14 },
     ]),
-    'taskade://workflows/list': JSON.stringify([
+    'momentum://workflows/list': JSON.stringify([
       { id: 'wf-1', name: 'Lead Scoring', trigger: 'New lead', runs: 1247 },
       { id: 'wf-2', name: 'Deal Notifications', trigger: 'Stage change', runs: 843 },
     ]),
-    'taskade://gallery': JSON.stringify([
+    'momentum://gallery': JSON.stringify([
       { id: 'app-1', name: 'Sales Pipeline', category: 'Sales', clones: 1247 },
       { id: 'app-2', name: 'CRM Dashboard', category: 'Sales', clones: 892 },
     ]),

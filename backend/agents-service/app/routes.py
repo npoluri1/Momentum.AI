@@ -301,39 +301,30 @@ async def store_memory(
     return {"document_id": doc_id}
 
 
+from app.services.resource_provisioner import ResourceProvisioner
+
 @chat_router.post("/genesis", response_model=GenesisResponse)
 async def genesis(request: GenesisRequest, db: Session = Depends(get_db)):
     try:
         # 1. Generate the system design
         system_design = await genesis_agent.generate_system(request.prompt)
         
-        # 2. Provision Resources (Mocking the external calls for now, but creating agents locally)
-        # Create Agents
-        for agent_data in system_design.agents:
-            agent = Agent(
-                name=agent_data.name,
-                description=agent_data.description,
-                model_provider="openai",
-                model_name=agent_data.model,
-                system_prompt=agent_data.system_prompt,
-                tools_enabled=agent_data.tools,
-                organization_id=request.organization_id,
-                created_by=request.user_id,
-            )
-            db.add(agent)
-        
-        db.commit()
-        
-        # In a real system, we'd call CRM Service and Workflow Engine here.
-        # For this 'completion' task, we'll return a successful response indicating
-        # that the system was designed and provisioned.
+        # 2. Provision Resources
+        provisioner = ResourceProvisioner(db)
+        project_id = await provisioner.provision_system(
+            design=system_design,
+            organization_id=request.organization_id,
+            user_id=request.user_id
+        )
         
         return GenesisResponse(
             success=True,
-            project_id=str(uuid.uuid4()), # In reality, the CRM service would return this
+            project_id=project_id,
             name=system_design.name,
             domain=system_design.domain,
             message=f"System '{system_design.name}' for {system_design.domain} successfully designed and provisioned with {len(system_design.agents)} agents, {len(system_design.task_lists)} task lists, and {len(system_design.workflows)} workflows."
         )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))

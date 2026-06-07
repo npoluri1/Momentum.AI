@@ -153,3 +153,4 @@ uploads/
 *.seed
 *.pid.lock
 .scannerwork/
+.aider*

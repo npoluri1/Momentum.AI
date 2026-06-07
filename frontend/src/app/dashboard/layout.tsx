@@ -4,18 +4,19 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Zap, Search, Grid3X3, FolderKanban, Play, Bot,
+  Zap, Search, Grid3X3, FolderKanban,
   Share2, ChevronDown, Settings, Menu,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Avatar';
 import { SearchModal } from '@/components/layout/SearchModal';
+import { ChatBox } from '@/components/layout/ChatBox';
+import SiteNav from '@/components/layout/SiteNav';
 
 const recentNav = [
-  { label: 'My Apps', icon: Grid3X3, href: '/dashboard' },
-  { label: 'Projects', icon: FolderKanban, href: '/dashboard/projects' },
-  { label: 'Media', icon: Play, href: '/dashboard/media' },
-  { label: 'AI Agents', icon: Bot, href: '/dashboard/agents' },
+  { label: 'Dashboard', icon: Grid3X3, href: '/dashboard' },
+  { label: 'Workspace', icon: FolderKanban, href: '/dashboard/workspace' },
+  { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +37,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, []);
 
   return (
-    <div className="flex h-screen bg-surface-950 text-surface-100 overflow-hidden">
+    <div className="flex flex-col h-screen bg-surface-950 text-surface-100 overflow-hidden">
+      <SiteNav />
+      <div className="flex flex-1 min-h-0" style={{ paddingTop: '3.5rem' }}>
       {mobileSidebar && (
         <div className="fixed inset-0 z-30 bg-black/60 lg:hidden" onClick={() => setMobileSidebar(false)} />
       )}
@@ -51,7 +54,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Zap className="w-4 h-4 text-white" />
           </div>
           <span className="text-base font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-brand-400 to-cyan-400">
-            Taskade
+            Momentum AI
           </span>
         </div>
 
@@ -150,6 +153,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </div>
 
       {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
+      <ChatBox />
+      </div>
     </div>
   );
 }

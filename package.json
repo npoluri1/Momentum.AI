@@ -12,5 +12,8 @@
     "build": "docker-compose -f infra/docker-compose.yml build",
     "test": "echo 'See each service for test commands'",
     "clean": "docker-compose -f infra/docker-compose.yml down -v --rmi all"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }

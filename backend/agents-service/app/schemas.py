@@ -123,7 +123,7 @@ class OrchestrationRequest(BaseModel):
 
 class OrchestrationResponse(BaseModel):
     final_output: str
-    intermediate_results: Optional[List[Dict[str, Any]]] = None
+    intermediate_results: Optional[list[dict[str, Any]]] = None
 
 
 class GenesisRequest(BaseModel):

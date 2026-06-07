@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="30%" stop-color="#16213e"/>
+      <stop offset="70%" stop-color="#0f3460"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff3d6f"/>
+      <stop offset="50%" stop-color="#ff2d60"/>
+      <stop offset="100%" stop-color="#e81c4f"/>
+    </linearGradient>
+    <linearGradient id="boltGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b8a"/>
+      <stop offset="100%" stop-color="#ff2d60"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff2d60" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#ff2d60" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#ff2d60" stop-opacity="0.15"/>
+    </linearGradient>
+    <filter id="glowFilter">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadowFilter">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#ff2d60" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect x="32" y="32" width="960" height="960" rx="192" ry="192" fill="url(#bgGrad)"/>
+
+  <!-- Subtle ring decoration -->
+  <circle cx="512" cy="512" r="340" fill="none" stroke="url(#ringGrad)" stroke-width="1.5"/>
+
+  <!-- Outer ring -->
+  <circle cx="512" cy="512" r="260" fill="none" stroke="rgba(255,45,96,0.08)" stroke-width="1"/>
+
+  <!-- Glow behind bolt -->
+  <circle cx="512" cy="512" r="140" fill="#ff2d60" opacity="0.06" filter="url(#glowFilter)"/>
+
+  <!-- Lightning Bolt - main shape -->
+  <g filter="url(#shadowFilter)">
+    <path d="
+      M 468 180
+      L 350 520
+      L 440 520
+      L 400 720
+      L 620 440
+      L 530 440
+      L 590 260
+      Z
+    " fill="url(#boltGrad)"/>
+
+    <!-- Bolt highlight/glare -->
+    <path d="
+      M 468 180
+      L 350 520
+      L 440 520
+      L 400 720
+      L 468 520
+      L 410 520
+      L 490 320
+      Z
+    " fill="url(#boltGlow)" opacity="0.35"/>
+  </g>
+
+  <!-- Small highlight dot at top -->
+  <circle cx="490" cy="490" r="80" fill="#ff6b8a" opacity="0.04"/>
+
+  <!-- Bottom-right accent dots -->
+  <circle cx="760" cy="760" r="6" fill="#ff2d60" opacity="0.25"/>
+  <circle cx="790" cy="730" r="4" fill="#ff2d60" opacity="0.15"/>
+  <circle cx="740" cy="790" r="3" fill="#ff2d60" opacity="0.1"/>
+
+  <!-- Top-left accent dots -->
+  <circle cx="280" cy="280" r="4" fill="#ff2d60" opacity="0.15"/>
+  <circle cx="260" cy="260" r="3" fill="#ff2d60" opacity="0.08"/>
+</svg>

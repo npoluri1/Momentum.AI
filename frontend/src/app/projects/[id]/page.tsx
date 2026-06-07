@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, Button, Badge, Input } from '@/component
 import { cn } from '@/lib/utils';
 import {
   ArrowLeft, Plus, Columns, List, GripVertical, X, Send,
-  MessageSquare, Clock, Activity, BarChart3,
+  MessageSquare, Clock, Activity, BarChart3, Bot, Zap,
+  Calendar, GitGraph, Table2, History,
 } from 'lucide-react';
 import type { Project, Task } from '@/lib/types';
 import toast from 'react-hot-toast';
@@ -32,6 +33,7 @@ export default function ProjectDetailPage() {
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [agents, setAgents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<'kanban' | 'list'>('kanban');
@@ -43,10 +45,12 @@ export default function ProjectDetailPage() {
     Promise.all([
       api.getProject(params.id as string),
       api.getTasks(params.id as string),
+      fetch(`/api/v1/agents?organization_id=org-123`).then(r => r.json()),
     ])
-      .then(([proj, tsks]) => {
+      .then(([proj, tsks, ags]) => {
         setProject(proj);
         setTasks(tsks);
+        setAgents(ags);
       })
       .catch(() => setError('Project not found'))
       .finally(() => setLoading(false));
@@ -148,12 +152,35 @@ export default function ProjectDetailPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setView('kanban')}
+            title="Board View"
             className={cn('p-2 rounded-lg transition-colors', view === 'kanban' ? 'bg-indigo-500/10 text-indigo-400' : 'text-gray-500 hover:text-gray-300')}
           ><Columns className="h-4 w-4" /></button>
           <button
             onClick={() => setView('list')}
+            title="List View"
             className={cn('p-2 rounded-lg transition-colors', view === 'list' ? 'bg-indigo-500/10 text-indigo-400' : 'text-gray-500 hover:text-gray-300')}
           ><List className="h-4 w-4" /></button>
+          <div className="w-px h-6 bg-gray-800 mx-1" />
+          <button
+            onClick={() => router.push(`/projects/${params.id}/gantt`)}
+            title="Timeline View"
+            className="p-2 rounded-lg text-gray-500 hover:text-gray-300"
+          ><Calendar className="h-4 w-4" /></button>
+          <button
+            onClick={() => router.push(`/projects/${params.id}/mindmap`)}
+            title="Mind Map View"
+            className="p-2 rounded-lg text-gray-500 hover:text-gray-300"
+          ><GitGraph className="h-4 w-4" /></button>
+          <button
+            onClick={() => router.push(`/projects/${params.id}/table`)}
+            title="Table View"
+            className="p-2 rounded-lg text-gray-500 hover:text-gray-300"
+          ><Table2 className="h-4 w-4" /></button>
+          <button
+            onClick={() => router.push(`/projects/${params.id}/timeline`)}
+            title="Timeline View"
+            className="p-2 rounded-lg text-gray-500 hover:text-gray-300"
+          ><History className="h-4 w-4" /></button>
         </div>
       </div>
 
@@ -241,6 +268,30 @@ export default function ProjectDetailPage() {
         </div>
 
         <div className="space-y-4">
+          <Card>
+            <CardHeader><h3 className="text-sm font-medium text-gray-300 flex items-center gap-2"><Bot className="h-4 w-4" />Project Agents</h3></CardHeader>
+            <CardContent className="p-3 space-y-2">
+              {agents.map((agent) => (
+                <div key={agent.id} className="flex items-center justify-between p-2 rounded-lg bg-indigo-500/5 border border-indigo-500/10 hover:bg-indigo-500/10 transition-colors cursor-pointer group">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-500 flex items-center justify-center text-white">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-200">{agent.name}</p>
+                      <p className="text-[10px] text-gray-500">{agent.model_name}</p>
+                    </div>
+                  </div>
+                  <Badge variant="primary" className="text-[8px] px-1 py-0 h-4">Active</Badge>
+                </div>
+              ))}
+              {agents.length === 0 && <p className="text-xs text-gray-600 text-center py-4">No agents active</p>}
+              <Button variant="ghost" size="sm" className="w-full text-[10px] h-7 gap-1 mt-1">
+                <Plus className="w-3 h-3" /> Hire New Agent
+              </Button>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader><h3 className="text-sm font-medium text-gray-300 flex items-center gap-2"><Activity className="h-4 w-4" />Activity</h3></CardHeader>
             <CardContent className="p-3 space-y-2 max-h-64 overflow-y-auto">

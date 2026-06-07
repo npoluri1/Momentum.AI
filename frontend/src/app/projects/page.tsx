@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import {
   FolderKanban, Plus, Search, MoreHorizontal, Clock,
   Users, CheckCircle, AlertCircle, BarChart3, Bot,
@@ -24,6 +25,13 @@ const statusColors: Record<string, string> = {
 
 export default function ProjectsPage() {
   const [view, setView] = useState<'grid' | 'list'>('grid');
+  const [query, setQuery] = useState('');
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return projects;
+    return projects.filter((p) => p.name.toLowerCase().includes(q));
+  }, [query]);
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-950">
@@ -36,10 +44,16 @@ export default function ProjectsPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
-              <input type="text" placeholder="Search projects..." className="pl-9 pr-4 py-2 text-sm rounded-lg border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/50 w-56" />
-            </div>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-400" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  type="text"
+                  placeholder="Search projects..."
+                  className="pl-9 pr-4 py-2 text-sm rounded-lg border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-surface-900 dark:text-white placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/50 w-56"
+                />
+              </div>
             <div className="flex items-center gap-1 bg-white dark:bg-surface-800 rounded-lg border border-surface-300 dark:border-surface-600 p-0.5">
               <button onClick={() => setView('grid')} className={`p-1.5 rounded ${view === 'grid' ? 'bg-surface-100 dark:bg-surface-700 text-surface-900 dark:text-white' : 'text-surface-400'}`}>
                 <Grid3X3 className="w-4 h-4" />
@@ -56,8 +70,9 @@ export default function ProjectsPage() {
 
         {view === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {projects.map((project) => (
-              <div key={project.name} className="group p-5 rounded-xl border border-surface-200/60 dark:border-surface-700/60 bg-white dark:bg-surface-900/40 hover:bg-surface-50 dark:hover:bg-surface-800/40 transition-all cursor-pointer">
+            {filtered.map((project) => (
+              <Link key={project.name} href={`/projects/${encodeURIComponent(project.name)}`} className="group block">
+                <div className="p-5 rounded-xl border border-surface-200/60 dark:border-surface-700/60 bg-white dark:bg-surface-900/40 hover:bg-surface-50 dark:hover:bg-surface-800/40 transition-all cursor-pointer">
                 <div className="flex items-start justify-between mb-3">
                   <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${project.color} flex items-center justify-center shadow-sm`}>
                     <FolderKanban className="w-5 h-5 text-white" />
@@ -79,7 +94,8 @@ export default function ProjectsPage() {
                 <div className="flex items-center justify-between mt-1">
                   <span className="text-xs text-surface-400">{project.progress}%</span>
                 </div>
-              </div>
+                </div>
+              </Link>
             ))}
           </div>
         ) : (
@@ -91,8 +107,9 @@ export default function ProjectsPage() {
               <span>Due</span>
               <span></span>
             </div>
-            {projects.map((project) => (
-              <div key={project.name} className="grid grid-cols-6 gap-4 px-5 py-3.5 text-sm items-center hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors border-b border-surface-100 dark:border-surface-800 last:border-0">
+            {filtered.map((project) => (
+              <Link key={project.name} href={`/projects/${encodeURIComponent(project.name)}`} className="block">
+                <div className="grid grid-cols-6 gap-4 px-5 py-3.5 text-sm items-center hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors border-b border-surface-100 dark:border-surface-800 last:border-0">
                 <div className="col-span-2 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${project.color} flex items-center justify-center`}>
                     <FolderKanban className="w-4 h-4 text-white" />
@@ -110,12 +127,13 @@ export default function ProjectsPage() {
                 </div>
                 <span className="text-surface-600 dark:text-surface-300">{project.completed}/{project.tasks}</span>
                 <span className="text-surface-500">{project.due}</span>
-                <div className="flex justify-end">
-                  <button className="p-1 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700 text-surface-400">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </button>
+                  <div className="flex justify-end">
+                    <button className="p-1 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-700 text-surface-400">
+                      <MoreHorizontal className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

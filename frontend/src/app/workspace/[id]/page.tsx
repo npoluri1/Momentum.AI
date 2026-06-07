@@ -17,9 +17,9 @@ export default function WorkspaceDetailPage() {
   const workspace = {
     id: params.id as string,
     name: 'Pipeline that scores every lead',
-    team: 'SALES@taskade',
+    team: 'SALES@momentum.ai',
     description: 'AI-powered sales pipeline with lead scoring, deal tracking, and automated follow-ups. Clone this workspace to get a complete sales system with agents and workflows pre-configured.',
-    screenshot: 'https://www.taskade.com/share/apps/dry36084slddvvrh/screenshot.png',
+    screenshot: 'https://www.momentum.ai/share/apps/dry36084slddvvrh/screenshot.png',
     projects: 4, agents: 2, flows: 3, clones: 1247,
     category: 'Sales',
   };

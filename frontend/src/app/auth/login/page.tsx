@@ -4,11 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui';
+import { api } from '@/lib/api';
+import { useAuthStore } from '@/store/auth-store';
 import { Eye, EyeOff, Github, Chrome, ArrowRight, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { setAuth } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
@@ -19,9 +22,10 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 1000));
+      const { token, user } = await api.login(form.email, form.password);
+      setAuth(user, token);
       toast.success('Welcome back!');
-      router.push('/dashboard');
+      router.push('/workspace/dashboard');
     } catch {
       setError('Invalid email or password');
     } finally {
@@ -32,7 +36,7 @@ export default function LoginPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-surface-900 dark:text-white mb-1">Sign in</h1>
-      <p className="text-surface-500 dark:text-surface-400 mb-8 text-sm">Welcome back to Taskade</p>
+      <p className="text-surface-500 dark:text-surface-400 mb-8 text-sm">Welcome back to Momentum AI</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -63,7 +67,7 @@ export default function LoginPage() {
           </button>
         </div>
         <div className="flex items-center justify-end">
-          <button type="button" className="text-sm text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-medium">Forgot password?</button>
+          <Link href="/auth/forgot-password" className="text-sm text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-medium">Forgot password?</Link>
         </div>
         {error && <p className="text-sm text-danger-500 bg-danger-50 dark:bg-danger-950/30 px-3 py-2 rounded-lg">{error}</p>}
         <Button type="submit" loading={isLoading} className="w-full">

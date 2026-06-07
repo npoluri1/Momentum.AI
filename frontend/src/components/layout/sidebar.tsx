@@ -10,14 +10,12 @@ import {
   Users,
   Workflow,
   Puzzle,
-  Settings,
   ChevronLeft,
   ChevronRight,
   Zap,
   BarChart3,
   MessageSquare,
   FileText,
-  HelpCircle,
   LogOut,
   ChevronDown,
 } from 'lucide-react';
@@ -32,23 +30,18 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Agents', href: '/dashboard/agents', icon: Bot, badge: 3 },
-  { label: 'Projects', href: '/dashboard/projects', icon: FolderKanban },
-  { label: 'CRM', href: '/dashboard/crm', icon: Users },
-  { label: 'Automations', href: '/dashboard/automations', icon: Workflow },
-  { label: 'Integrations', href: '/dashboard/integrations', icon: Puzzle },
+  { label: 'Dashboard', href: '/workspace/dashboard', icon: LayoutDashboard },
+  { label: 'Agents', href: '/workspace/agents', icon: Bot, badge: 3 },
+  { label: 'Projects', href: '/workspace/projects', icon: FolderKanban },
+  { label: 'CRM', href: '/workspace/crm', icon: Users },
+  { label: 'Automations', href: '/workspace/automations', icon: Workflow },
+  { label: 'Integrations', href: '/integrations', icon: Puzzle },
 ];
 
 const secondaryNav: NavItem[] = [
-  { label: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
-  { label: 'Messages', href: '/dashboard/messages', icon: MessageSquare, badge: 5 },
-  { label: 'Documents', href: '/dashboard/documents', icon: FileText },
-];
-
-const bottomNav: NavItem[] = [
-  { label: 'Settings', href: '/dashboard/settings', icon: Settings },
-  { label: 'Help', href: '/dashboard/help', icon: HelpCircle },
+  { label: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { label: 'Messages', href: '/workspace/messages', icon: MessageSquare, badge: 5 },
+  { label: 'Documents', href: '/workspace/documents', icon: FileText },
 ];
 
 interface SidebarProps {
@@ -69,7 +62,7 @@ export function Sidebar({ collapsed: controlledCollapsed, onToggle }: SidebarPro
   };
 
   const isActive = (href: string) => {
-    if (href === '/dashboard') return pathname === href;
+    if (href === '/workspace/dashboard' || href === '/dashboard') return pathname === href;
     return pathname.startsWith(href);
   };
 
@@ -120,17 +113,17 @@ export function Sidebar({ collapsed: controlledCollapsed, onToggle }: SidebarPro
         collapsed ? 'justify-center' : 'justify-between'
       )}>
         {!collapsed && (
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="/workspace/dashboard" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-brand-700">
-              Global Tasks
+              Momentum AI
             </span>
           </Link>
         )}
         {collapsed && (
-          <Link href="/dashboard">
+          <Link href="/workspace/dashboard">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
             </div>
@@ -151,13 +144,11 @@ export function Sidebar({ collapsed: controlledCollapsed, onToggle }: SidebarPro
         {renderNavItems(mainNav)}
 
         {!collapsed && (
-          <>
-            <div className="pt-4 pb-2">
-              <p className="px-3 text-xs font-semibold text-surface-400 dark:text-surface-500 uppercase tracking-wider">
-                Workspace
-              </p>
-            </div>
-          </>
+          <div className="pt-4 pb-2">
+            <p className="px-3 text-xs font-semibold text-surface-400 dark:text-surface-500 uppercase tracking-wider">
+              Workspace
+            </p>
+          </div>
         )}
         {renderNavItems(secondaryNav)}
       </div>
@@ -196,7 +187,7 @@ export function Sidebar({ collapsed: controlledCollapsed, onToggle }: SidebarPro
           <div className="flex items-center gap-3">
             <Avatar name="John Doe" size="sm" status="online" />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">John Doe</p>
+              <p className="text-sm font-medium truncate">JD</p>
               <p className="text-xs text-surface-500 truncate">john@company.com</p>
             </div>
             <button className="p-1.5 rounded-lg text-surface-400 hover:text-danger-500 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
