@@ -3,14 +3,21 @@ from app.agents.base_agent import BaseAgent
 from app.agents.openai_agent import OpenAIAgent
 from app.agents.anthropic_agent import AnthropicAgent
 from app.agents.gemini_agent import GeminiAgent
+try:
+    from app.agents.ollama_agent import OllamaAgent
+except Exception:
+    OllamaAgent = None
 
 
 class AgentFactory:
     _providers = {
-        "openai": OpenAIAgent,
-        "anthropic": AnthropicAgent,
-        "gemini": GeminiAgent,
+        'openai': OpenAIAgent,
+        'anthropic': AnthropicAgent,
+        'gemini': GeminiAgent,
     }
+    if OllamaAgent:
+        _providers['ollama'] = OllamaAgent
+        _providers['local'] = OllamaAgent
 
     @classmethod
     def register_provider(cls, name: str, agent_class: type):
@@ -30,11 +37,14 @@ class AgentFactory:
         memory_config: Optional[dict] = None,
         **kwargs,
     ) -> BaseAgent:
-        provider_lower = provider.lower()
+        provider_lower = (provider or 'ollama').lower()
         if provider_lower not in cls._providers:
-            raise ValueError(
-                f"Unsupported provider: '{provider}'. Available: {list(cls._providers.keys())}"
-            )
+            if OllamaAgent:
+                provider_lower = 'ollama'
+            else:
+                raise ValueError(
+                    f\"Unsupported provider: '{provider}'. Available: {list(cls._providers.keys())}\"
+                )
 
         agent_class = cls._providers[provider_lower]
         return agent_class(
@@ -55,17 +65,19 @@ class AgentFactory:
 
     @classmethod
     def validate_provider_model(cls, provider: str, model_name: str) -> bool:
-        provider = provider.lower()
+        provider = (provider or '').lower()
         known_models = {
-            "openai": ["gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"],
-            "anthropic": [
-                "claude-3-opus-20240229",
-                "claude-3-sonnet-20240229",
-                "claude-3-haiku-20240307",
-                "claude-3-5-sonnet-20241022",
+            'openai': ['gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'],
+            'anthropic': [
+                'claude-3-opus-20240229',
+                'claude-3-sonnet-20240229',
+                'claude-3-haiku-20240307',
+                'claude-3-5-sonnet-20241022',
             ],
-            "gemini": ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash"],
+            'gemini': ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-2.0-flash'],
+            'ollama': [],
+            'local': [],
         }
         if provider not in known_models:
-            return False
-        return model_name in known_models[provider]
+            return True
+        return model_name in known_models[provider] or len(known_models[provider]) == 0
